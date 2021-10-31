@@ -17,3 +17,10 @@ texture = ExtResource( 1 )
 shape = SubResource( 1 )
 
 [node name="RayCast2D" type="RayCast2D" parent="."]
+
+[node name="MoveTimer" type="Timer" parent="."]
+process_mode = 0
+wait_time = 0.25
+autostart = true
+
+[connection signal="timeout" from="MoveTimer" to="." method="_on_MoveTimer_timeout"]
