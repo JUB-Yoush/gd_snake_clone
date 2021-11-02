@@ -21,6 +21,10 @@ window/size/height=720
 window/size/test_width=640
 window/size/test_height=480
 
+[global]
+
+window=false
+
 [input]
 
 up={

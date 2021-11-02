@@ -1,6 +1,10 @@
 extends Area2D
 
 var tile_size = 32
+var size = 1
+var is_head = true
+onready var body_Scene = preload("res://src/player/Body.tscn")
+onready var main = get_tree().get_root()
 var directions: Dictionary = {
 	'up': 0,
 	'right': 90,
@@ -38,11 +42,25 @@ func _unhandled_input(event: InputEvent) -> void:
 			rotation_degrees = 270
 		
 func move():
-	position += (Vector2.UP.rotated(deg2rad(rotation_degrees)) ) * tile_size
+	#print("x:",(position.x -16)," ","y:",(position.y -16))
+	var body_piece = body_Scene.instance()
+	body_piece.position.x = position.x - 32
+	body_piece.position.y = position.y - 32
+	var rot_vector = Vector2.UP.rotated(deg2rad(rotation_degrees))
+	position.x += int((rot_vector.x) * tile_size)
+	position.y += int((rot_vector.y) * tile_size)
+	print("x:",(position.x -16)," ","y:",(position.y -16))
+	var uncentered_tilex = (position.x - tile_size/2)  /tile_size
+	var uncentered_tiley = (position.y - tile_size/2) /tile_size
+	print("x Tile: ",(uncentered_tilex)," y Tile: " ,(uncentered_tiley))
+	
+	main.add_child(body_piece)
+	
 
 func _physics_process(delta: float) -> void:
+	#var uncentered_tilex = (position.x - tile_size/2)  /tile_size
+	#var uncentered_tiley = (position.y - tile_size/2) /tile_size
 	pass
-		
 
 func _on_MoveTimer_timeout() -> void:
 	move()
