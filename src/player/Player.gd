@@ -3,8 +3,11 @@ extends Area2D
 var tile_size = 32
 var size = 1
 var is_head = true
+var max_len = 3
 onready var body_Scene = preload("res://src/player/Body.tscn")
 onready var main = get_tree().get_root()
+onready var bodiesNode = get_parent().get_node("BodyPieces")
+
 var directions: Dictionary = {
 	'up': 0,
 	'right': 90,
@@ -46,6 +49,7 @@ func move():
 	var body_piece = body_Scene.instance()
 	body_piece.position.x = position.x - 32
 	body_piece.position.y = position.y - 32
+	
 	var rot_vector = Vector2.UP.rotated(deg2rad(rotation_degrees))
 	position.x += int((rot_vector.x) * tile_size)
 	position.y += int((rot_vector.y) * tile_size)
@@ -54,7 +58,12 @@ func move():
 	var uncentered_tiley = (position.y - tile_size/2) /tile_size
 	print("x Tile: ",(uncentered_tilex)," y Tile: " ,(uncentered_tiley))
 	
-	main.add_child(body_piece)
+	bodiesNode.add_child(body_piece)
+	for i in bodiesNode.get_child_count():
+		var current_child = bodiesNode.get_child(i)
+		current_child.snake_len += 1
+		if current_child.snake_len >= max_len:
+			current_child.queue_free()
 	
 
 func _physics_process(delta: float) -> void:
