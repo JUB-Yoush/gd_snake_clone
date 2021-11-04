@@ -47,16 +47,17 @@ func _unhandled_input(event: InputEvent) -> void:
 func move():
 	#print("x:",(position.x -16)," ","y:",(position.y -16))
 	var body_piece = body_Scene.instance()
+	body_piece.add_to_group("Body")
 	body_piece.position.x = position.x - 32
 	body_piece.position.y = position.y - 32
 	
 	var rot_vector = Vector2.UP.rotated(deg2rad(rotation_degrees))
 	position.x += int((rot_vector.x) * tile_size)
 	position.y += int((rot_vector.y) * tile_size)
-	print("x:",(position.x -16)," ","y:",(position.y -16))
+	#print("x:",(position.x -16)," ","y:",(position.y -16))
 	var uncentered_tilex = (position.x - tile_size/2)  /tile_size
 	var uncentered_tiley = (position.y - tile_size/2) /tile_size
-	print("x Tile: ",(uncentered_tilex)," y Tile: " ,(uncentered_tiley))
+	#print("x Tile: ",(uncentered_tilex)," y Tile: " ,(uncentered_tiley))
 	
 	bodiesNode.add_child(body_piece)
 	for i in bodiesNode.get_child_count():
@@ -73,3 +74,24 @@ func _physics_process(delta: float) -> void:
 
 func _on_MoveTimer_timeout() -> void:
 	move()
+
+
+func _on_Apple_eaten() -> void:
+	max_len += 1
+
+
+func _on_Player_area_entered(area: Area2D) -> void:
+	if area.is_in_group('Body'):
+		get_tree().reload_current_scene()
+
+
+func _on_VisibilityNotifier2D_screen_exited() -> void:
+	if rotation_degrees == 0:
+		position.y = (14 * tile_size) + tile_size/2
+	elif rotation_degrees == 180:
+		position.y = (0 * tile_size) + tile_size/2
+	elif rotation_degrees == 90:
+		position.x = (0 * tile_size) + tile_size/2
+	elif rotation_degrees == 270:
+		position.x = (19 * tile_size) + tile_size/2
+		

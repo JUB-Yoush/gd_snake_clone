@@ -4,7 +4,7 @@
 [ext_resource path="res://src/player/Player.gd" type="Script" id=2]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 16, 16 )
+extents = Vector2( 14, 13 )
 
 [node name="Player" type="Area2D"]
 script = ExtResource( 2 )
@@ -20,7 +20,12 @@ shape = SubResource( 1 )
 
 [node name="MoveTimer" type="Timer" parent="."]
 process_mode = 0
-wait_time = 0.25
+wait_time = 0.2
 autostart = true
 
+[node name="VisibilityNotifier2D" type="VisibilityNotifier2D" parent="."]
+position = Vector2( 0, -32 )
+scale = Vector2( 1.6, 1.6 )
+
 [connection signal="timeout" from="MoveTimer" to="." method="_on_MoveTimer_timeout"]
+[connection signal="screen_exited" from="VisibilityNotifier2D" to="." method="_on_VisibilityNotifier2D_screen_exited"]

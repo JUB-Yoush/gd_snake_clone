@@ -11,3 +11,7 @@ position = Vector2( 292.813, 324.186 )
 [node name="BodyPieces" type="Node2D" parent="."]
 
 [node name="Apple" parent="." instance=ExtResource( 2 )]
+
+[connection signal="area_entered" from="Player" to="Player" method="_on_Player_area_entered"]
+[connection signal="area_entered" from="Apple" to="Apple" method="_on_Apple_area_entered"]
+[connection signal="eaten" from="Apple" to="Player" method="_on_Apple_eaten"]
